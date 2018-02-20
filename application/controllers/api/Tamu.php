@@ -33,7 +33,7 @@ class Tamu extends REST_Controller
 						);
 
 		#Initialize image name
-		$image_name=round(microtime(true)).date("Ymdhis").".jpg";
+		$image_name=$_FILES['foto']['name'];
 
 		#Upload avatar
 		if ($this->Upload_Images($image_name))
