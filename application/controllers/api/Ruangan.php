@@ -9,6 +9,8 @@ require APPPATH . 'libraries/REST_Controller.php';
 class Ruangan extends REST_Controller
 {
 	
+		#0:digunakan, 1:perlu dibersihkan, 2: tersedia
+	
 	function __construct()
 	{
 		parent::__construct();

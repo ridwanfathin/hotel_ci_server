@@ -27,11 +27,26 @@ class M_sewa extends CI_Model
 	}
 
 
-	function get_by_email($email){		
-		#Get data by username or email
-		$this->db->or_where('email',$email);
+	function get_by_status($status){		
+		#Get data sewa by status
+		#0:berlangsung, 1:selesai
+		$this->db->or_where('status',$status);
 		$data=$this->db->get($this->table_name)->row();
 		return $data;
+	}
+
+	function get_like_name($name){	
+		#Get data sewa where nama time like $name
+		$this->db->like('nama', $name);
+		$data=$this->db->get($this->table_name);
+		return $data->result();
+	}
+
+	function get_by_checkout($begin, $end){	
+		#Get data sewa by checkout date in range between $begin and $end
+		$this->db->where('tgl_checkout BETWEEN "'. $begin. '" and "'.$end.'" and status = 1');
+		$data=$this->db->get($this->table_name);
+		return $data->result();
 	}
 
 

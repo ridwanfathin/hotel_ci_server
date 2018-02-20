@@ -25,13 +25,19 @@ class Tamu extends REST_Controller
 
 	function register_post(){
 
-		$user_data = array(	'nama' =>$this->post('nama') ,
+		$user_data = array(	'nama' =>$this->post('nama'),
 							'email' => $this->post('email'), 
 							'telp' => $this->post('telp'), 
-							'nik' => $this->post('nik'),
-							'foto' => $this->post('foto'),
+							'no_identitas' => $this->post('no_identitas'),
 							'alamat' => $this->post('alamat')
 						);
+
+		#Initialize image name
+		$image_name=round(microtime(true)).date("Ymdhis").".jpg";
+
+		#Upload avatar
+		if ($this->Upload_Images($image_name))
+			$user_data['foto']=$image_name;
 	
 		#Set response API if Success
 		$response['SUCCESS'] = array('status' => TRUE, 'message' => 'success insert data' , 'data' => $user_data );
@@ -105,10 +111,16 @@ class Tamu extends REST_Controller
 		$user_data = array(	'nama' => $this->post('nama'),
 							'email' => $this->post('email'), 
 							'telp' => $this->post('telp'), 
-							'nik' => $this->post('nik'),
-							'foto' => $this->post('foto'),
+							'no_identitas' => $this->post('no_identitas'),
 							'alamat' => $this->post('alamat')
 						);
+		
+		#Initialize image name
+		$image_name=round(microtime(true)).date("Ymdhis").".jpg";
+
+		#Upload avatar
+		if ($this->Upload_Images($image_name))
+			$user_data['foto']=$image_name;
 
 		#Set response API if Success
 		$response['SUCCESS'] = array('status' => TRUE, 'message' => 'success update user' , 'data' => $user_data );
@@ -182,6 +194,30 @@ class Tamu extends REST_Controller
 			return TRUE;
 		else
 			return FALSE;
+	}
+
+	function Upload_Images($name) 
+    {		
+    		$strImage= $_FILES['foto']['tmp_name'];
+    		if (!empty($strImage)) {
+    			$img = imagecreatefromjpeg($strImage);
+    			// $img = imagecreatefromstring(base64_decode($strImage));
+							
+				if($img != false)
+				{
+				   if (imagejpeg($img, './upload/avatars/'.$name)) {
+				   	return true;
+				   }else{
+				   	return false;
+				   }
+				}
+			}
+	}
+
+
+	function remove_image($name){
+		$path='./upload/avatars/'.$name;
+		unlink($path);
 	}
 
 }
