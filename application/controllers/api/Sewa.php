@@ -21,16 +21,21 @@ class Sewa extends REST_Controller
 		
 		#Configure load model api table sewas
 		$this->load->model('M_sewa');
+		$this->load->model('M_ruangan');
 	}
 
 	function checkin_post(){
 
 		$sewa_data = array(	'nama' =>$this->post('nama'),
+							'id_kamar' =>$this->post('id_kamar'),
 							'tgl_checkin' => $this->post('tgl_checkin'), //tanggal sekarang
 							'gas_awal' => $this->post('gas_awal'),
 							'listrik_awal' => $this->post('listrik_awal'),
 							'air_awal' => $this->post('air_awal'),
 							'status' => 0
+						);
+
+		$ruangan = array(	'status' => 0 //set ruangan jadi digunakan
 						);
 	
 		#Set response API if Success
@@ -44,7 +49,7 @@ class Sewa extends REST_Controller
 
 		#Check if insert sewa_data Success
 		if ($this->M_sewa->insert($sewa_data)) {
-			
+			$this->M_sewa->update($this->post('id_kamar'), $sewa_data)
 			#If success
 			$this->response($response['SUCCESS'],REST_Controller::HTTP_CREATED);
 
@@ -183,6 +188,7 @@ class Sewa extends REST_Controller
 	function update_post($id=""){
 
 		$sewa_data = array(	'nama' =>$this->post('nama'),
+							'id_kamar' =>$this->post('id_kamar'),
 							'tgl_checkin' => $this->post('tgl_checkin'), 
 							'tgl_checkout' => $this->post('tgl_checkout'),
 							'gas_awal' => $this->post('gas_awal'), 
@@ -233,6 +239,8 @@ class Sewa extends REST_Controller
 							'status' => 1
 						);
 
+		$ruangan = array(	'status' => 1 //set ruangan jadi perlu dibersihkan
+						);
 		#Set response API if Success
 		$response['SUCCESS'] = array('status' => TRUE, 'message' => 'success update sewa' , 'data' => $sewa_data );
 
