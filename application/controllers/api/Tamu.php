@@ -6,18 +6,12 @@
 */
 require APPPATH . 'libraries/REST_Controller.php';
 
-class Tamu extends REST_Controller
+class Tamu extends Auth
 {
 	
 	function __construct()
 	{
 		parent::__construct();
-		
-		#Configure limit request methods
-		$this->methods['index_get']['limit']=10; #10 requests per hour per user/key
-		$this->methods['index_post']['limit']=10; #10 requests per hour per user/key
-		$this->methods['index_delete']['limit']=10; #10 requests per hour per user/key
-		$this->methods['index_put']['limit']=10; #10 requests per hour per user/key
 		
 		#Configure load model api table users
 		$this->load->model('M_tamu');

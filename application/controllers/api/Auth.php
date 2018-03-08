@@ -12,6 +12,12 @@ class Auth extends REST_Controller
 	{
 		parent::__construct();
 		
+		// Add origin header 
+		header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Credentials: true');
+		header('Access-Control-Allow-Method: PUT, GET, POST, DELETE, OPTIONS');
+		header('Access-Control-Allow-Headers: Content-Type, x-xsrf-token');
+
 		#Configure limit request methods
 		$this->methods['index_get']['limit']=10; #10 requests per hour per user/key
 		$this->methods['index_post']['limit']=10; #10 requests per hour per user/key
